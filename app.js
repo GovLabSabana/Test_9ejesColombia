@@ -168,9 +168,9 @@ function getShareText(platform) {
     const possessive = userName ? "Su" : "Mi";
 
     if (platform === 'twitter') {
-        return `${subjectPrefix} el Test Politico 9 Ejes Colombia. Perfil: ${profileTitle}.
-        
-Hazlo aqui: ${siteUrl}`;
+        const intro = `Hice el test 9 ejes colombia, soy ${profileTitle}: ${profileDesc}`;
+        const finalMessage = intro.length > 230 ? intro.substring(0, 227) + "..." : intro;
+        return `${finalMessage} ${siteUrl}`;
     }
 
     return `${subjectPrefix} el Test Politico 9 Ejes Colombia.
