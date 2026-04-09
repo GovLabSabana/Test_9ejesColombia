@@ -154,12 +154,16 @@ async function captureAndDownload() {
     }
 }
 
-function getShareText(top3) {
-    const names = top3.slice(0, 3).map((c, i) => `${MEDALS[i]} ${c.name} (${c.percentage}%)`).join('\n');
+function getShareText() {
+    let profileDesc = "Realicé el Test Político 9 Ejes Colombia";
+    if (window.lastUserAxisScores) {
+        profileDesc = generateProfileSummary(window.lastUserAxisScores).title;
+    }
+
     const siteUrl = 'https://juansotag.github.io/Test_9ejesColombia/';
     return userName
-        ? `${userName} hizo el Test Político 9 Ejes Colombia 🇨🇴📊\n\nSus valores electorales se alinean con:\n${names}\n\n¡Anímate a descubrir tu perfil ideológico y candidatos afines con datos aquí! 👇\n${siteUrl}`
-        : `¡Acabo de hacer el Test Político 9 Ejes Colombia! 🇨🇴📊\n\nMis valores electorales se alinean con:\n${names}\n\n¡Anímate a descubrir tu perfil ideológico y candidatos afines con datos aquí! 👇\n${siteUrl}`;
+        ? `${userName} hizo el Test Politico 9 Ejes Colombia.\n\nSu perfil electoral es:\n*${profileDesc}*\n\nDescubre tu perfil ideologico y afinidades politicas reales aqui: \n${siteUrl}`
+        : `Acabo de hacer el Test Politico 9 Ejes Colombia.\n\nMi perfil electoral es:\n*${profileDesc}*\n\nDescubre tu perfil ideologico y afinidades politicas reales aqui: \n${siteUrl}`;
 }
 
 async function shareToPlatform(platform, top3) {
