@@ -154,8 +154,8 @@ async function captureAndDownload() {
     }
 }
 
-function getShareText() {
-    let profileTitle = "Realicé el Test Político 9 Ejes Colombia";
+function getShareText(platform) {
+    let profileTitle = "Realice el Test Politico 9 Ejes Colombia";
     let profileDesc = "";
     if (window.lastUserAxisScores) {
         const fullProf = generateProfileSummary(window.lastUserAxisScores);
@@ -166,6 +166,12 @@ function getShareText() {
     const siteUrl = 'https://test9col.up.railway.app/';
     const subjectPrefix = userName ? `${userName} hizo` : `Hice`;
     const possessive = userName ? "Su" : "Mi";
+
+    if (platform === 'twitter') {
+        return `${subjectPrefix} el Test Politico 9 Ejes Colombia. Perfil: ${profileTitle}.
+        
+Hazlo aqui: ${siteUrl}`;
+    }
 
     return `${subjectPrefix} el Test Politico 9 Ejes Colombia.
 
@@ -178,7 +184,7 @@ ${siteUrl}`;
 }
 
 async function shareToPlatform(platform, top3) {
-    const text = getShareText();
+    const text = getShareText(platform);
     const siteUrl = 'https://test9col.up.railway.app/';
 
     // Si estamos en un dispositivo móvil con Web Share API, es la forma nativa de enviar la imagen directamente a la app.
@@ -653,7 +659,7 @@ function showResults() {
     if (userProfileAxes) {
         const profileGen = generateProfileSummary(userAxisScores);
         userProfileAxes.innerHTML = `
-            <div id="user-profile-summary" style="margin-bottom: 1.5rem; padding: 1.25rem; background: rgba(59, 130, 246, 0.1); border-left: 4px solid var(--primary); border-radius: 8px;">
+            <div id="user-profile-summary" style="margin-bottom: 1.5rem; padding: 1.25rem; background: rgba(15, 23, 42, 0.8); border-left: 4px solid var(--primary); border-radius: 8px;">
                 <h3 style="color: var(--primary); margin: 0 0 0.5rem 0; font-size: 1.35rem; font-weight: 700;">${profileGen.title}</h3>
                 <p style="line-height: 1.5; font-size: 0.95rem; margin: 0; color: var(--text-main);">${profileGen.desc}</p>
             </div>
@@ -724,10 +730,10 @@ function showResults() {
             
             item.innerHTML = `
                 <div class="axis-header" style="justify-content: space-between; margin-bottom: 0.5rem; display: flex;">
-                    <span class="axis-pole-negative" style="display:flex; align-items:center; gap:0.4rem; flex:1; text-align:left; ${userScore < -0.2 ? 'font-weight:bold;color:var(--primary)' : 'opacity:0.6'}">
+                    <span class="axis-pole-negative" style="display:flex; align-items:center; gap:0.4rem; flex:1; text-align:left; ${userScore < -0.2 ? 'font-weight:bold;color:var(--primary)' : 'color:var(--text-muted)'}">
                         ${negIcon} ${ax.pole_negative}
                     </span>
-                    <span class="axis-pole-positive" style="display:flex; align-items:center; justify-content:flex-end; gap:0.4rem; flex:1; text-align:right; ${userScore > 0.2 ? 'font-weight:bold;color:var(--danger)' : 'opacity:0.6'}">
+                    <span class="axis-pole-positive" style="display:flex; align-items:center; justify-content:flex-end; gap:0.4rem; flex:1; text-align:right; ${userScore > 0.2 ? 'font-weight:bold;color:var(--danger)' : 'color:var(--text-muted)'}">
                         ${ax.pole_positive} ${posIcon}
                     </span>
                 </div>
