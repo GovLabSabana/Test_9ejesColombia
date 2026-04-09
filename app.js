@@ -155,20 +155,31 @@ async function captureAndDownload() {
 }
 
 function getShareText() {
-    let profileDesc = "Realicé el Test Político 9 Ejes Colombia";
+    let profileTitle = "Realicé el Test Político 9 Ejes Colombia";
+    let profileDesc = "";
     if (window.lastUserAxisScores) {
-        profileDesc = generateProfileSummary(window.lastUserAxisScores).title;
+        const fullProf = generateProfileSummary(window.lastUserAxisScores);
+        profileTitle = fullProf.title;
+        profileDesc = fullProf.desc;
     }
 
-    const siteUrl = 'https://juansotag.github.io/Test_9ejesColombia/';
-    return userName
-        ? `${userName} hizo el Test Politico 9 Ejes Colombia.\n\nSu perfil electoral es:\n*${profileDesc}*\n\nDescubre tu perfil ideologico y afinidades politicas reales aqui: \n${siteUrl}`
-        : `Acabo de hacer el Test Politico 9 Ejes Colombia.\n\nMi perfil electoral es:\n*${profileDesc}*\n\nDescubre tu perfil ideologico y afinidades politicas reales aqui: \n${siteUrl}`;
+    const siteUrl = 'https://test9col.up.railway.app/';
+    const subjectPrefix = userName ? `${userName} hizo` : `Hice`;
+    const possessive = userName ? "Su" : "Mi";
+
+    return `${subjectPrefix} el Test Politico 9 Ejes Colombia.
+
+${possessive} perfil electoral es:
+*${profileTitle}*
+"${profileDesc}"
+
+Descubre tu perfil ideologico y afinidades politicas reales aqui:
+${siteUrl}`;
 }
 
 async function shareToPlatform(platform, top3) {
-    const text = getShareText(top3);
-    const siteUrl = 'https://juansotag.github.io/Test_9ejesColombia/';
+    const text = getShareText();
+    const siteUrl = 'https://test9col.up.railway.app/';
 
     // Si estamos en un dispositivo móvil con Web Share API, es la forma nativa de enviar la imagen directamente a la app.
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -181,7 +192,7 @@ async function shareToPlatform(platform, top3) {
 
             let shareText = text;
             if (platform === 'instagram') {
-                shareText = "Toma pantalla o comparte tus resultados directamente 😎";
+                shareText = "Toma pantalla o comparte tus resultados directamente.";
             }
 
             const shareData = { files: [file], title: 'Test 9 Ejes Colombia', text: shareText };
@@ -201,7 +212,7 @@ async function shareToPlatform(platform, top3) {
     if (platform === 'native') {
         captureAndDownload();
         setTimeout(() => {
-            alert("✅ Tu imagen de resultados ha sido descargada. Compártela con tus amigos.");
+            alert("Tu imagen de resultados ha sido descargada. Compartela con tus amigos.");
             if (navigator.share) {
                 navigator.share({ title: 'Test 9 Ejes Colombia', text: text, url: siteUrl }).catch(() => { });
             }
@@ -229,14 +240,14 @@ async function shareToPlatform(platform, top3) {
             url = `https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`;
         } else if (platform === 'instagram') {
             setTimeout(() => {
-                alert("✅ Tu imagen de resultados ha sido descargada.\n✅ El texto sugerido fue copiado a tu portapapeles.\n\nSúbela a tu historia o post de Instagram y pega el texto 🎉");
+                alert("Tu imagen de resultados ha sido descargada.\nEl texto sugerido fue copiado a tu portapapeles.\n\nSubela a tu historia o post de Instagram y pega el texto.");
             }, 600);
             return;
         }
 
         if (url) {
             setTimeout(() => {
-                const proceed = confirm(`✅ Tu imagen ha sido descargada en tu dispositivo.\n✅ El texto fue opcionalmente copiado a tu portapapeles.\n\nAl continuar se abrirá ${platform.toUpperCase()}.\n¡Asegúrate de adjuntar la foto descargada y pegar el texto en tu publicación!`);
+                const proceed = confirm(`Tu imagen ha sido descargada en tu dispositivo.\nEl texto fue opcionalmente copiado a tu portapapeles.\n\nAl continuar se abrira ${platform.toUpperCase()}.\nAsegurate de adjuntar la foto descargada y pegar el texto en tu publicacion.`);
                 if (proceed) {
                     window.open(url, '_blank', 'noopener');
                 }
